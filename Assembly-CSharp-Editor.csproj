@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
+    <Compile Include="Assets\PROMETEO - Car Controller\Editor\PrometeoEditor.cs" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Games\Unity\Version\2022.3.52f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

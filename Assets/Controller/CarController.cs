@@ -1,8 +1,10 @@
+using System;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Splines;
+using Random = UnityEngine.Random;
 
 namespace Controller
 {
@@ -12,6 +14,10 @@ namespace Controller
         public TextMeshProUGUI lapTimeText;
         public TextMeshProUGUI lapCountText;
         public TextMeshProUGUI lastLapTime;
+        
+        public float maxRadiusDelta = 90f;  // Maximum radius delta in degrees
+        public float weightSpeed = 0.7f;    // Weight of speed in the probability formula
+        public float weightRadius = 0.3f;   //
         
         public SplineContainer spline; // Reference to the SplineContainer
         private float _splineProgressPercentage = 0f; // Tracks progress along the spline
@@ -23,8 +29,8 @@ namespace Controller
         [FormerlySerializedAs("speed")] public float curSpeed = 0f; // Speed of the car
         
         public float maxSpeed = 10f;
-        public float Acceleration = 5f;
-        public float Deceleration = 7.5f;
+        private float Acceleration;
+        private float Deceleration;
         
         private float elapsedTime = 0f; // Tracks time for lap
         private const int REQUIRED_LAPS = 3;
@@ -40,6 +46,10 @@ namespace Controller
             isCrashing = false;
             lastLapTime.SetText("");
 
+            Acceleration = maxSpeed * 0.75f;
+            Deceleration = maxSpeed * 0.75f;
+            
+            lastRotation = transform.rotation.y;
             splineLength = spline.CalculateLength();
             startPosition = transform.position; // Record the initial position
         }
@@ -83,11 +93,31 @@ namespace Controller
 
         private void CheckOverSpeed()
         {
-            //TODO: Make new check over speed based on curve angle
+            if (isCrashing) return;
             float currentRotation = transform.rotation.y;
-            float rotationDelta = currentRotation - lastRotation;
-            if (rotationDelta > 20f) print("Turn left");
-            else if (rotationDelta < -20f) print("Turn right");
+            float rotationDelta = Mathf.Abs(currentRotation - lastRotation);
+            
+            if (rotationDelta > 0.05f)
+            {
+                float normalizedSpeed = Mathf.Clamp01(curSpeed / maxSpeed);
+                float normalizeDeltaY= Mathf.Clamp01(rotationDelta / maxRadiusDelta);
+
+                // Compute weighted probability
+                float probability = (weightSpeed * normalizedSpeed) + (weightRadius * normalizeDeltaY);
+
+                // Clamp the result to ensure it is between 0 and 1
+                Mathf.Clamp01(probability);
+                
+                print("We are in corner: " + probability);
+                if (probability > 0.5f)
+                {
+                    if (Random.Range(0f, 1f) > 0.5f)
+                    {
+                        FlyOffTrack();
+                    }
+                }
+            }
+            
             lastRotation = currentRotation;
         }
 
@@ -100,7 +130,7 @@ namespace Controller
             spline.Evaluate(_splineProgressPercentage, out float3 position, out float3 tangent, out float3 up);
             
             transform.position = position;
-            transform.rotation = Quaternion.LookRotation(tangent, up) * Quaternion.Euler(0, -90, 0); // Adjust rotation offset.
+            transform.rotation = Quaternion.LookRotation(tangent, up); // Adjust rotation offset. * Quaternion.Euler(0, -90, 0)
         }
 
         private void FlyOffTrack()
