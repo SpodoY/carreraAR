@@ -56,6 +56,7 @@ namespace Controller
 
         void Update()
         {
+            if (isCrashing) return;
             
             CalcCurSpeed();
             MoveAlongSpline();
@@ -93,7 +94,6 @@ namespace Controller
 
         private void CheckOverSpeed()
         {
-            if (isCrashing) return;
             float currentRotation = transform.rotation.y;
             float rotationDelta = Mathf.Abs(currentRotation - lastRotation);
             
@@ -159,6 +159,7 @@ namespace Controller
             // Reset the state
             isAccelerating = false;
             isCrashing = false;
+            curSpeed = 0;
         }
 
         private void CalcTrackTime()
