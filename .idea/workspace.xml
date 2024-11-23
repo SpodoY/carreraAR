@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f434d3fa-ebd6-487f-ac4d-dcd7d8162e5b" name="Changes" comment="ui first version">
-      <change beforePath="$PROJECT_DIR$/Assembly-CSharp-Editor.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp-Editor.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assembly-CSharp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/RaceTrack V3/SplineExtrude_Spline 1.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/RaceTrack V3/SplineExtrude_Spline 1.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity.Splines.Examples.Editor.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Unity.Splines.Examples.Editor.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity.Splines.Examples.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Unity.Splines.Examples.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj" afterDir="false" />
+    <list default="true" id="f434d3fa-ebd6-487f-ac4d-dcd7d8162e5b" name="Changes" comment="added objects and skybox">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +65,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1732362116813</updated>
-      <workItem from="1732362117906" duration="1385000" />
+      <workItem from="1732362117906" duration="2786000" />
     </task>
     <task id="LOCAL-00001" summary="ui first version">
       <option name="closed" value="true" />
@@ -81,7 +75,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732362157801</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added objects and skybox">
+      <option name="closed" value="true" />
+      <created>1732368212678</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732368212678</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -89,6 +91,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="ui first version" />
-    <option name="LAST_COMMIT_MESSAGE" value="ui first version" />
+    <MESSAGE value="added objects and skybox" />
+    <option name="LAST_COMMIT_MESSAGE" value="added objects and skybox" />
   </component>
 </project>
