@@ -2,6 +2,7 @@ using Meta.XR.ImmersiveDebugger.UserInterface;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Splines;
 
 namespace Controller
@@ -20,11 +21,11 @@ namespace Controller
         public bool isAccelerating;
         public bool isCrashing;
 
-        public float speed = 5f; // Speed of the car
+        [FormerlySerializedAs("speed")] public float curSpeed = 0f; // Speed of the car
+        
         public float maxSpeed = 15f;
-        public float maxSafeSpeed = 10f; // Maximum speed before flying off
-        public float maxSpeedDuration = 2f; // How long the car can stay at high speed
-        public float overSpeedTimer = 0f; // Timer for high-speed duration
+        public float Acceleration = 5f;
+        public float Deceleration = 10f;
         
         private float elapsedTime = 0f; // Tracks time for lap
         private const int REQUIRED_LAPS = 3;
@@ -45,14 +46,9 @@ namespace Controller
         void Update()
         {
             
-            float curAcceleration = OVRInput.Get(OVRInput.RawAxis1D.RIndexTrigger);
-            isAccelerating =  curAcceleration > 0.1f;
-            
-            if (isAccelerating)
-            {
-                MoveAlongSpline();
-                CheckOverSpeed();
-            }
+            CalcCurSpeed();
+            MoveAlongSpline();
+            CheckOverSpeed();
             CalcTrackTime();
             
             // Loop back to the start if the end is reached
@@ -62,6 +58,17 @@ namespace Controller
             }
         }
 
+        private void CalcCurSpeed()
+        {
+            float curAcceleration = OVRInput.Get(OVRInput.RawAxis1D.RIndexTrigger);
+            isAccelerating =  curAcceleration > 0.1f;
+            
+            if (isAccelerating) { curSpeed += Acceleration * Time.deltaTime; }
+            else { curSpeed -= Deceleration * Time.deltaTime; }
+            
+            curSpeed = Mathf.Clamp(curSpeed, 0f, maxSpeed);
+        }
+
         private void SetAcceleration(bool state)
         {
             isAccelerating = state;
@@ -69,27 +76,19 @@ namespace Controller
 
         public void SetSpeed(float newSpeed)
         {
-            speed = newSpeed;
+            curSpeed = newSpeed;
             SetAcceleration(newSpeed > 0);
         }
 
         private void CheckOverSpeed()
         {
-            if (speed > maxSafeSpeed)
-            {
-                overSpeedTimer += Time.deltaTime;
-                if (overSpeedTimer > maxSpeedDuration) FlyOffTrack();
-            }
-            else
-            {
-                overSpeedTimer = 0f;
-            }
+            //TODO: Make new check over speed based on curve angle
         }
 
         private void MoveAlongSpline()
         {
             // Increment progress based on speed
-            _splineProgressPercentage += Time.deltaTime * maxSpeed / splineLength;
+            _splineProgressPercentage += Time.deltaTime * curSpeed / splineLength;
 
             // Update the car's position and rotation along the spline
             spline.Evaluate(_splineProgressPercentage, out float3 position, out float3 tangent, out float3 up);
@@ -122,7 +121,6 @@ namespace Controller
             if (rb != null) Destroy(rb); // Remove the Rigidbody to re-enable path-following
 
             // Reset the state
-            overSpeedTimer = 0f;
             isAccelerating = false;
             isCrashing = false;
         }
