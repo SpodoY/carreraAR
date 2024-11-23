@@ -39,6 +39,10 @@ namespace Controller
         private float lastRotation;
         
         private Vector3 startPosition; // Store the initial position
+        
+        // The following particle systems are used as tire smoke when the car drifts.
+        public ParticleSystem RLWParticleSystem;
+        public ParticleSystem RRWParticleSystem;
 
         void Start()
         {
@@ -81,17 +85,6 @@ namespace Controller
             curSpeed = Mathf.Clamp(curSpeed, 0f, maxSpeed);
         }
 
-        private void SetAcceleration(bool state)
-        {
-            isAccelerating = state;
-        }
-
-        public void SetSpeed(float newSpeed)
-        {
-            curSpeed = newSpeed;
-            SetAcceleration(newSpeed > 0);
-        }
-
         private void CheckOverSpeed()
         {
             float currentRotation = transform.rotation.y;
@@ -101,6 +94,8 @@ namespace Controller
             {
                 float normalizedSpeed = Mathf.Clamp01(curSpeed / maxSpeed);
                 float normalizeDeltaY= Mathf.Clamp01(rotationDelta / maxRadiusDelta);
+                
+                
 
                 // Compute weighted probability
                 float probability = (weightSpeed * normalizedSpeed) + (weightRadius * normalizeDeltaY);
@@ -109,13 +104,24 @@ namespace Controller
                 Mathf.Clamp01(probability);
                 
                 print("We are in corner: " + probability);
+                if (probability >= 0.3f && curSpeed >= maxSpeed * 0.4f)
+                {
+                    RRWParticleSystem.Play();
+                    RLWParticleSystem.Play();
+                }
+                
                 if (probability > 0.5f)
                 {
                     if (Random.Range(0f, 1f) > 0.7f)
                     {
-                        FlyOffTrack();
+                        // FlyOffTrack();
                     }
                 }
+            }
+            else
+            {
+                RRWParticleSystem.Stop();
+                RLWParticleSystem.Stop();
             }
             
             lastRotation = currentRotation;
