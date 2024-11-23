@@ -1,4 +1,3 @@
-using Meta.XR.ImmersiveDebugger.UserInterface;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
@@ -23,13 +22,15 @@ namespace Controller
 
         [FormerlySerializedAs("speed")] public float curSpeed = 0f; // Speed of the car
         
-        public float maxSpeed = 15f;
+        public float maxSpeed = 10f;
         public float Acceleration = 5f;
-        public float Deceleration = 10f;
+        public float Deceleration = 7.5f;
         
         private float elapsedTime = 0f; // Tracks time for lap
         private const int REQUIRED_LAPS = 3;
         private int _currentLap = 1;
+
+        private float lastRotation;
         
         private Vector3 startPosition; // Store the initial position
 
@@ -83,6 +84,11 @@ namespace Controller
         private void CheckOverSpeed()
         {
             //TODO: Make new check over speed based on curve angle
+            float currentRotation = transform.rotation.y;
+            float rotationDelta = currentRotation - lastRotation;
+            if (rotationDelta > 20f) print("Turn left");
+            else if (rotationDelta < -20f) print("Turn right");
+            lastRotation = currentRotation;
         }
 
         private void MoveAlongSpline()
