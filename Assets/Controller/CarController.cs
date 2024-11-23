@@ -111,7 +111,7 @@ namespace Controller
                 print("We are in corner: " + probability);
                 if (probability > 0.5f)
                 {
-                    if (Random.Range(0f, 1f) > 0.5f)
+                    if (Random.Range(0f, 1f) > 0.7f)
                     {
                         FlyOffTrack();
                     }
@@ -138,11 +138,13 @@ namespace Controller
             // Temporarily disable movement
             isAccelerating = false;
             isCrashing = true;
+            
+            var flyOffDamper = 0.4f;
 
             // Add a "fly-off" force (e.g., upward and outward)
             Rigidbody rb = gameObject.GetComponent<Rigidbody>();
             if (rb == null) rb = gameObject.AddComponent<Rigidbody>();
-            rb.AddForce(transform.up * 5f + transform.forward * 10f, ForceMode.Impulse);
+            rb.AddForce(transform.up * curSpeed * flyOffDamper + transform.forward * curSpeed * flyOffDamper, ForceMode.Impulse);
 
             // Schedule respawn after a delay
             Invoke(nameof(Respawn), 3f);
