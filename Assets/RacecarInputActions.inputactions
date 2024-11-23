@@ -1,0 +1,34 @@
+{
+    "name": "RacecarInputActions",
+    "maps": [
+        {
+            "name": "RaceCarStuff",
+            "id": "cdbad9a7-0ca7-4aba-9c33-948816a0c029",
+            "actions": [
+                {
+                    "name": "Accelerate",
+                    "type": "Value",
+                    "id": "b92e0c66-144c-443e-94fe-9b8ce044af0c",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6671fa15-f4e7-4643-b7ac-9c16feecfd9a",
+                    "path": "<XRController>{RightHand}/triggerForce",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Accelerate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
