@@ -112,9 +112,9 @@ namespace Controller
                 
                 if (probability > 0.5f)
                 {
-                    if (Random.Range(0f, 1f) > 0.7f)
+                    if (Random.Range(0f, 1f) > 0.9f)
                     {
-                        // FlyOffTrack();
+                        FlyOffTrack();
                     }
                 }
             }

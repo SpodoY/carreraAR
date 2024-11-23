@@ -5908,12 +5908,22 @@ PrefabInstance:
     - target: {fileID: 4402756320724654539, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.1
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4402756320724654539, guid: 79d0ca8b77e301442afdb49f102e8aed,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4402756320724654539, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 1.5
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4402756320724654539, guid: 79d0ca8b77e301442afdb49f102e8aed,
+        type: 3}
+      propertyPath: InitialModule.startRotation.scalar
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4402756320724654539, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
@@ -5957,6 +5967,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4402756320999286479, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4402756320999286479, guid: 79d0ca8b77e301442afdb49f102e8aed,
+        type: 3}
       propertyPath: ShapeModule.type
       value: 4
       objectReference: {fileID: 0}
@@ -5967,18 +5982,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4402756320999286479, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
+      propertyPath: InitialModule.size3D
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4402756320999286479, guid: 79d0ca8b77e301442afdb49f102e8aed,
+        type: 3}
       propertyPath: ShapeModule.radiusThickness
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4402756320999286479, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 4402756320999286479, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 1.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7045468751210077382, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}

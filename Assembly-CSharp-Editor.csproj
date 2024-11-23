@@ -1522,6 +1522,10 @@
       <Project>{7AF11E32-31B7-23E6-45CB-D173F397028C}</Project>
       <Name>Unity.XR.Interaction.Toolkit.Samples.StarterAssets</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.Splines.Examples.csproj">
+      <Project>{6BA6ED2A-42A5-DC54-8A4B-081DE6C4026F}</Project>
+      <Name>Unity.Splines.Examples</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj">
       <Project>{04C40EE1-376E-7F57-6C3D-19DB2D0ED9EF}</Project>
       <Name>Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor</Name>
