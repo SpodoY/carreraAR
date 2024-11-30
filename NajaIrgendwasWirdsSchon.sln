@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.XR.Interaction.Toolkit.Samples.StarterAssets", "Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj", "{11a40676-e024-f4b7-7e54-825612b98638}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Splines.Examples", "Unity.Splines.Examples.csproj", "{241865b0-eaf3-355f-6b22-96fef7d52790}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{f1ebe115-2ab0-bc24-9a60-bfb764e21892}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Splines.Examples.Editor", "Unity.Splines.Examples.Editor.csproj", "{ac53d591-989e-f46b-dba3-b37d5a7582cc}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{96ba1511-442d-99fd-07ed-b3563a8022b0}"
 EndProject
@@ -18,8 +22,12 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{11a40676-e024-f4b7-7e54-825612b98638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{11a40676-e024-f4b7-7e54-825612b98638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241865b0-eaf3-355f-6b22-96fef7d52790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241865b0-eaf3-355f-6b22-96fef7d52790}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{f1ebe115-2ab0-bc24-9a60-bfb764e21892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{f1ebe115-2ab0-bc24-9a60-bfb764e21892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ac53d591-989e-f46b-dba3-b37d5a7582cc}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ac53d591-989e-f46b-dba3-b37d5a7582cc}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96ba1511-442d-99fd-07ed-b3563a8022b0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{96ba1511-442d-99fd-07ed-b3563a8022b0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{d40cc692-aec3-215c-f229-bb06e0444ca7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

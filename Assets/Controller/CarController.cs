@@ -11,9 +11,9 @@ namespace Controller
     public class CarController : MonoBehaviour
     {
         
-        public TextMeshProUGUI lapTimeText;
-        public TextMeshProUGUI lapCountText;
-        public TextMeshProUGUI lastLapTime;
+        public TextMeshPro lapTimeText;
+        public TextMeshPro lapCountText;
+        public TextMeshPro lastLapTime;
         
         public float maxRadiusDelta = 90f;  // Maximum radius delta in degrees
         public float weightSpeed = 0.7f;    // Weight of speed in the probability formula
@@ -46,6 +46,8 @@ namespace Controller
 
         void Start()
         {
+            lastLapTime.text = "Not set yet";
+            
             isAccelerating = false;
             isCrashing = false;
             lastLapTime.SetText("");
