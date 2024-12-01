@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
@@ -16,8 +17,8 @@ namespace Controller
         public TextMeshPro lastLapTime;
         
         public float maxRadiusDelta = 90f;  // Maximum radius delta in degrees
-        public float weightSpeed = 0.7f;    // Weight of speed in the probability formula
-        public float weightRadius = 0.3f;   //
+        public float weightSpeed = 0.6f;    // Weight of speed in the probability formula
+        public float weightRadius = 0.4f;   //
         
         public SplineContainer spline; // Reference to the SplineContainer
         private float _splineProgressPercentage = 0f; // Tracks progress along the spline
@@ -28,7 +29,8 @@ namespace Controller
 
         [FormerlySerializedAs("speed")] public float curSpeed = 0f; // Speed of the car
         
-        public float maxSpeed = 10f;
+        private float maxSpeed;
+        private float maxFlyOffSpeed;
         private float Acceleration;
         private float Deceleration;
         
@@ -37,8 +39,8 @@ namespace Controller
         private int _currentLap = 1;
 
         private float lastRotation;
-        
-        private Vector3 startPosition; // Store the initial position
+        private Vector3 flyOffPosition; // Store the initial position
+        public Rigidbody rb;
         
         // The following particle systems are used as tire smoke when the car drifts.
         public ParticleSystem RLWParticleSystem;
@@ -46,27 +48,30 @@ namespace Controller
 
         void Start()
         {
-            lastLapTime.text = "Not set yet";
+            formatLastLapTime(0);
             
             isAccelerating = false;
             isCrashing = false;
-            lastLapTime.SetText("");
 
+            maxSpeed = 20f;
+            maxFlyOffSpeed = 20f;
             Acceleration = maxSpeed * 0.75f;
             Deceleration = maxSpeed * 0.75f;
             
             lastRotation = transform.rotation.y;
             splineLength = spline.CalculateLength();
-            startPosition = transform.position; // Record the initial position
+            flyOffPosition = transform.position; // Record the initial position
         }
 
         void Update()
         {
-            if (isCrashing) return;
-            
-            CalcCurSpeed();
-            MoveAlongSpline();
-            CheckOverSpeed();
+            if (!isCrashing)
+            {
+                CalcCurSpeed();
+                MoveAlongSpline();
+                CheckOverSpeed();
+            }
+            FlyOffTrack();
             CalcTrackTime();
             
             // Loop back to the start if the end is reached
@@ -76,10 +81,16 @@ namespace Controller
             }
         }
 
+        private void formatLastLapTime(float elapsed)
+        {
+            lastLapTime.text = elapsed == 0 ? $"Last time{Environment.NewLine}Not set yet" : $"Last time{Environment.NewLine}{elapsed:F2}";
+        }
+
         private void CalcCurSpeed()
         {
             float curAcceleration = OVRInput.Get(OVRInput.RawAxis1D.RIndexTrigger);
-            isAccelerating =  curAcceleration > 0.1f;
+            
+            isAccelerating =  curAcceleration > 0.1f || Input.GetMouseButton(0);
             
             if (isAccelerating) { curSpeed += Acceleration * Time.deltaTime; }
             else { curSpeed -= Deceleration * Time.deltaTime; }
@@ -96,16 +107,11 @@ namespace Controller
             {
                 float normalizedSpeed = Mathf.Clamp01(curSpeed / maxSpeed);
                 float normalizeDeltaY= Mathf.Clamp01(rotationDelta / maxRadiusDelta);
-                
-                
 
-                // Compute weighted probability
-                float probability = (weightSpeed * normalizedSpeed) + (weightRadius * normalizeDeltaY);
-
-                // Clamp the result to ensure it is between 0 and 1
-                Mathf.Clamp01(probability);
+                // Compute weighted probability and clamp the result to ensure it is between 0 and 1
+                float probability = Mathf.Clamp01(weightSpeed * normalizedSpeed) + (weightRadius * normalizeDeltaY);
                 
-                print("We are in corner: " + probability);
+                // print("We are in corner: " + probability);
                 if (probability >= 0.3f && curSpeed >= maxSpeed * 0.4f)
                 {
                     RRWParticleSystem.Play();
@@ -116,7 +122,12 @@ namespace Controller
                 {
                     if (Random.Range(0f, 1f) > 0.9f)
                     {
-                        FlyOffTrack();
+                        // Temporarily disable movement
+                        isCrashing = true;
+                        isAccelerating = false;
+                        
+                        // Schedule respawn after a delay
+                        Invoke(nameof(Respawn), 3f);
                     }
                 }
             }
@@ -143,28 +154,31 @@ namespace Controller
 
         private void FlyOffTrack()
         {
-            // Temporarily disable movement
-            isAccelerating = false;
-            isCrashing = true;
+            // Skip if car not crashing
+            if (!isCrashing) return;
             
-            var flyOffDamper = 0.4f;
-
             // Add a "fly-off" force (e.g., upward and outward)
-            Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-            if (rb == null) rb = gameObject.AddComponent<Rigidbody>();
-            rb.AddForce(transform.up * curSpeed * flyOffDamper + transform.forward * curSpeed * flyOffDamper, ForceMode.Impulse);
+            Vector3 flyOffDir = 5f * Vector3.up + transform.forward * 3f;
+            rb.AddForce(flyOffDir * maxFlyOffSpeed, ForceMode.Impulse);
 
-            // Schedule respawn after a delay
-            Invoke(nameof(Respawn), 3f);
+            StartCoroutine(ApplyDrag());
+        }
+        
+        private IEnumerator ApplyDrag()
+        {
+            float originalDrag = rb.drag;
+            rb.drag = 0.5f;
+
+            yield return new WaitForSeconds(3f);  // Apply drag for 3 second
+            
+            rb.drag = originalDrag;  // Reset drag after the car has slowed
         }
 
         private void Respawn()
         {
             // Reset position and remove flying effects
-            transform.position = startPosition;
+            transform.position = flyOffPosition;
             transform.rotation = Quaternion.identity;
-            Rigidbody rb = GetComponent<Rigidbody>();
-            if (rb != null) Destroy(rb); // Remove the Rigidbody to re-enable path-following
 
             // Reset the state
             isAccelerating = false;
@@ -181,7 +195,7 @@ namespace Controller
                 _currentLap += 1;
             } else if (_splineProgressPercentage >= 1f && _currentLap == REQUIRED_LAPS)
             {
-                lastLapTime.text = $"Prev. {elapsedTime:F2}s";
+                formatLastLapTime(elapsedTime);
                 _currentLap = 1;
                 elapsedTime = 0f;
             }
