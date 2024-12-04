@@ -35,6 +35,7 @@ namespace Controller
         private float Deceleration;
         
         private float elapsedTime = 0f; // Tracks time for lap
+        private float bestTime = float.MaxValue; // Tracks time for lap
         private const int REQUIRED_LAPS = 3;
         private int _currentLap = 1;
 
@@ -48,7 +49,7 @@ namespace Controller
 
         void Start()
         {
-            formatLastLapTime(0);
+            FormatBestLapTime();
             
             isAccelerating = false;
             isCrashing = false;
@@ -81,9 +82,9 @@ namespace Controller
             }
         }
 
-        private void formatLastLapTime(float elapsed)
+        private void FormatBestLapTime()
         {
-            lastLapTime.text = elapsed == 0 ? $"Last time{Environment.NewLine}Not set yet" : $"Last time{Environment.NewLine}{elapsed:F2}";
+            lastLapTime.text = bestTime == float.MaxValue ? $"Last time{Environment.NewLine}Not set yet" : $"Last time{Environment.NewLine}{bestTime:F2}";
         }
 
         private void CalcCurSpeed()
@@ -195,7 +196,8 @@ namespace Controller
                 _currentLap += 1;
             } else if (_splineProgressPercentage >= 1f && _currentLap == REQUIRED_LAPS)
             {
-                formatLastLapTime(elapsedTime);
+                if (elapsedTime < bestTime) bestTime = elapsedTime;
+                FormatBestLapTime();
                 _currentLap = 1;
                 elapsedTime = 0f;
             }
