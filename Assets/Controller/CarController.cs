@@ -84,7 +84,7 @@ namespace Controller
 
         private void FormatBestLapTime()
         {
-            lastLapTime.text = bestTime == float.MaxValue ? $"Last time{Environment.NewLine}Not set yet" : $"Last time{Environment.NewLine}{bestTime:F2}";
+            lastLapTime.text = bestTime == float.MaxValue ? $"Best time{Environment.NewLine}Not set yet" : $"Best time{Environment.NewLine}{bestTime:F2}";
         }
 
         private void CalcCurSpeed()
